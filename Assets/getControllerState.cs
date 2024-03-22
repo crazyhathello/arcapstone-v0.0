@@ -1,7 +1,7 @@
 // Code from https://github.com/abitha-thankaraj/xarm-vr/blob/main/Assets/Scripts/ControllerState.cs
 
 using UnityEngine;
-
+using Newtonsoft.Json;
 public class ControllerState
 {
     private OVRInput.Controller leftController;
@@ -81,6 +81,44 @@ public class ControllerState
                $"  Right Local Position: {Vector3ToString(rightLocalPosition)};" +
                $"  Right Local Rotation: {QuaternionToString(rightLocalRotation)};";
     }
+
+    public string ToJSON()
+    {
+        var leftControllerData = new
+        {
+            LeftX = leftX,
+            LeftY = leftY,
+            LeftMenu = leftMenu,
+            LeftThumbstick = leftThumbstick,
+            LeftIndexTrigger = leftIndexTrigger,
+            LeftHandTrigger = leftHandTrigger,
+            LeftThumbstickAxes = Vector2ToString(leftThumbstickAxes),
+            LeftLocalPosition = Vector3ToString(leftLocalPosition),
+            LeftLocalRotation = QuaternionToString(leftLocalRotation)
+        };
+
+        var rightControllerData = new
+        {
+            RightA = rightA,
+            RightB = rightB,
+            RightMenu = rightMenu,
+            RightThumbstick = rightThumbstick,
+            RightIndexTrigger = rightIndexTrigger,
+            RightHandTrigger = rightHandTrigger,
+            RightThumbstickAxes = Vector2ToString(rightThumbstickAxes),
+            RightLocalPosition = Vector3ToString(rightLocalPosition),
+            RightLocalRotation = QuaternionToString(rightLocalRotation)
+        };
+
+        var data = new
+        {
+            LeftController = leftControllerData,
+            RightController = rightControllerData
+        };
+
+        return JsonConvert.SerializeObject(data, Formatting.Indented);
+    }
+
 
 
 
